@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: golang-microapp
+  namespace: golang
+spec:
+  selector:
+    matchLabels:
+      app: golang-microapp
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: golang-microapp
+    spec:
+      containers:
+      - name: golang-microapp
+        image: public.ecr.aws/d3y4t7l0/modeglobal-poc:micro-golang
+        ports:
+        - containerPort: 8282
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-external
+  namespace: golang
+spec:
+  type: LoadBalancer
+  selector:
+    app: golang-microapp
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8282
