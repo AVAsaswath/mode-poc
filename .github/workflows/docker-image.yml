@@ -15,10 +15,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: 
+      run: |
        aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/d3y4t7l0
+       
        docker build -t modeglobal-poc .
+       
        docker tag modeglobal-poc:latest public.ecr.aws/d3y4t7l0/modeglobal-poc:latest
+       
        docker push public.ecr.aws/d3y4t7l0/modeglobal-poc:latest
        
       
